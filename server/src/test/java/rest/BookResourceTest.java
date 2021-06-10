@@ -74,7 +74,7 @@ class BookResourceTest extends SetupRestTests {
             .header("x-access-token", token)
             .pathParam("isbn", book1.getIsbn())
             .when()
-            .post("/book/loan/{isbn}")
+            .post("/books/loan/{isbn}")
             .then()
             .statusCode(200);
     }

@@ -48,7 +48,7 @@ public class BookFacade implements BookRepository {
             List<Book> books = em.createQuery("SELECT b FROM Book b", Book.class).getResultList();
             return BookDTO.getBookDTOSFromBooks(books);
         } catch (Exception e) {
-            throw new WebApplicationException("Unable to find any books", 404);
+            throw new WebApplicationException("Unable to find any books", 403);
         } finally {
             em.close();
         }
@@ -61,13 +61,22 @@ public class BookFacade implements BookRepository {
         return new BookDTO(book);
     }
 
+    private void validateLoanAndThrowIfInvalid(Book book, User user, int isbn) {
+        if (book == null) {
+            throw new WebApplicationException("Unable to find book with isbn: " + isbn);
+        }
+        for (Loan loan : user.getLoans()) {
+            if (loan.getBook() == book) {
+                throw new WebApplicationException("You already have that book loaned", 400);
+            }
+        }
+    }
+
     @Override
     public LoanDTO loanBook(String username, int isbn) throws WebApplicationException {
         return withUser(username, (user, em) -> {
             Book book = em.find(Book.class, isbn);
-            if (book == null) {
-                throw new WebApplicationException("Unable to find book with isbn: " + isbn);
-            }
+            validateLoanAndThrowIfInvalid(book, user, isbn);
             Loan loan = new Loan(null);
             em.getTransaction().begin();
             book.addLoad(loan);

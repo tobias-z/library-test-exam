@@ -16,4 +16,8 @@ const LIBRARY = {
   GET_LIBRARY: `${BASE_URL}/library`,
 };
 
-export { USER, INFO, LIBRARY };
+const BOOKS = {
+  LOAN: isbn => `${BASE_URL}/books/loan/${isbn}`,
+};
+
+export { USER, INFO, LIBRARY, BOOKS };

@@ -13,7 +13,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import rest.provider.Provider;
 
-@Path("book")
+@Path("books")
 public class BookResource extends Provider {
 
     private final BookRepository REPO = BookFacade.getInstance(EMF);
