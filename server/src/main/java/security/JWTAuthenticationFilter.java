@@ -90,11 +90,10 @@ public class JWTAuthenticationFilter implements ContainerRequestFilter {
             }
             String roles = signedJWT.getJWTClaimsSet().getClaim("roles").toString();
             String username = signedJWT.getJWTClaimsSet().getClaim("username").toString();
-            List<LoanDTO> loans = (List<LoanDTO>) signedJWT.getJWTClaimsSet().getClaim("loans");
 
             String[] rolesArray = roles.split(",");
 
-            return new UserPrincipal(username, rolesArray, loans);
+            return new UserPrincipal(username, rolesArray);
 //     return new UserPrincipal(username, roles);
         } else {
             throw new JOSEException("User could not be extracted from token");

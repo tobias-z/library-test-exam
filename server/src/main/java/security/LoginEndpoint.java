@@ -58,7 +58,6 @@ public class LoginEndpoint extends Provider {
             UserPrincipal principal = JWTAuthenticationFilter.getUserPrincipalFromTokenIfValid(token);
             JsonObject responseJson = new JsonObject();
             responseJson.addProperty("username", principal.getName());
-            responseJson.addProperty("loans", GSON.toJson(principal.getLoans()));
             responseJson.addProperty("token", token);
             return Response.ok(GSON.toJson(responseJson)).build();
         } catch (ParseException | JOSEException | AuthenticationException e) {
@@ -83,7 +82,6 @@ public class LoginEndpoint extends Provider {
             String token = createToken(username, user.getRolesAsStrings(), user.getLoans());
             JsonObject responseJson = new JsonObject();
             responseJson.addProperty("username", username);
-            responseJson.addProperty("loans", GSON.toJson(user.getLoans()));
             responseJson.addProperty("token", token);
             return Response.ok(GSON.toJson(responseJson)).build();
 
@@ -112,7 +110,6 @@ public class LoginEndpoint extends Provider {
             .subject(userName)
             .claim("username", userName)
             .claim("roles", rolesAsString)
-            .claim("loans", loans)
             .claim("issuer", issuer)
             .issueTime(date)
             .expirationTime(new Date(date.getTime() + TOKEN_EXPIRE_TIME))

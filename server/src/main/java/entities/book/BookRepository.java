@@ -13,4 +13,6 @@ public interface BookRepository {
 
     LoanDTO loanBook(String username, int isbn) throws WebApplicationException;
 
+    List<LoanDTO> getAllUserLoans(String username) throws WebApplicationException;
+
 }

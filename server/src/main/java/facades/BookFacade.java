@@ -86,7 +86,17 @@ public class BookFacade implements BookRepository {
         });
     }
 
-    public LoanDTO withUser(String username, UserAction<LoanDTO> action) {
+    @Override
+    public List<LoanDTO> getAllUserLoans(String username) throws WebApplicationException {
+        return withUser(username, (user, em) -> {
+            List<Loan> loans = em.createQuery("SELECT l FROM Loan l WHERE l.user.userName = :username", Loan.class)
+                .setParameter("username", username)
+                .getResultList();
+            return LoanDTO.getLoanDTOSFromLoans(loans);
+        });
+    }
+
+    public <T> T withUser(String username, UserAction<T> action) {
         EntityManager em = emf.createEntityManager();
         try {
             User user = em.find(User.class, username);

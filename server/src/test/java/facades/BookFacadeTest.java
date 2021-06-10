@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import dtos.BookDTO;
 import dtos.LoanDTO;
+import entities.Loan;
 import entities.Role;
 import entities.User;
 import entities.book.Book;
@@ -75,4 +76,15 @@ class BookFacadeTest {
         assertNotNull(loanDTO);
         assertEquals(book1.getIsbn(), loanDTO.getBook().getIsbn());
     }
+
+    @Test
+    @DisplayName("get all user loans should return all loans of user")
+    void getAllUserLoansShouldReturnAllLoansOfUser() throws Exception {
+        repo.loanBook(user.getUserName(), book1.getIsbn());
+        repo.loanBook(user.getUserName(), book2.getIsbn());
+        List<LoanDTO> loanDTOS = repo.getAllUserLoans(user.getUserName());
+        assertNotNull(loanDTOS);
+        assertEquals(2, loanDTOS.size());
+    }
+
 }
