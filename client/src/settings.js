@@ -20,6 +20,7 @@ const LIBRARY = {
 const BOOKS = {
   LOAN: isbn => `${BASE_URL}/books/loan/${isbn}`,
   GET_ALL_FROM_USER: `${BASE_URL}/books`,
+  EDIT_BOOK: `${BASE_URL}/books`,
 };
 
 export { USER, INFO, LIBRARY, BOOKS };

@@ -97,6 +97,26 @@ public class BookFacade implements BookRepository {
         });
     }
 
+    @Override
+    public BookDTO editBook(BookDTO bookDTO) throws WebApplicationException {
+        EntityManager em = emf.createEntityManager();
+        Book book = em.find(Book.class, bookDTO.getIsbn());
+        if (book == null) {
+            throw new WebApplicationException("Unable to find book with isbn: " + bookDTO.getIsbn());
+        }
+        book.updateFields(bookDTO);
+        try {
+            em.getTransaction().begin();
+            em.merge(book);
+            em.getTransaction().commit();
+            return new BookDTO(book);
+        } catch (Exception e) {
+            throw new WebApplicationException("Error when updating book with: " + bookDTO.getIsbn());
+        } finally {
+            em.close();
+        }
+    }
+
     public <T> T withUser(String username, UserAction<T> action) {
         EntityManager em = emf.createEntityManager();
         try {

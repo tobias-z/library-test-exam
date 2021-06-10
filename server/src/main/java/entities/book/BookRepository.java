@@ -15,4 +15,6 @@ public interface BookRepository {
 
     List<LoanDTO> getAllUserLoans(String username) throws WebApplicationException;
 
+    BookDTO editBook(BookDTO bookDTO) throws WebApplicationException;
+
 }

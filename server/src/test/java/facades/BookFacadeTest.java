@@ -88,5 +88,14 @@ class BookFacadeTest {
         assertEquals(2, loanDTOS.size());
     }
 
+    @Test
+    @DisplayName("edit book should update the book")
+    void editBookShouldUpdateTheBook() throws Exception {
+        BookDTO editMe = new BookDTO(book3);
+        editMe.setTitle("Something else");
+        BookDTO bookDTO = repo.editBook(editMe);
+        assertEquals(editMe.getTitle(), bookDTO.getTitle());
+        assertNotEquals(book3.getTitle(), bookDTO.getTitle());
+    }
 
 }

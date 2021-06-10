@@ -3,6 +3,7 @@ package rest;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.*;
 
+import dtos.BookDTO;
 import entities.Role;
 import entities.User;
 import entities.book.Book;
@@ -43,9 +44,12 @@ class BookResourceTest extends SetupRestTests {
             em.persist(book1);
 
             Role userRole = new Role("user");
+            Role adminRole = new Role("admin");
             user = new User("bob", "1234");
             user.addRole(userRole);
+            user.addRole(adminRole);
             em.persist(userRole);
+            em.persist(adminRole);
             em.persist(user);
             em.getTransaction().commit();
         } finally {
@@ -92,4 +96,22 @@ class BookResourceTest extends SetupRestTests {
             .then()
             .statusCode(200);
     }
+
+    @Test
+    @DisplayName("edit book returns a 200 response code")
+    void editBookReturnsA200ResponseCode() throws Exception {
+        String token = login();
+        BookDTO bookDTO = new BookDTO(book1);
+        bookDTO.setTitle("Changed title");
+        given()
+            .contentType(ContentType.JSON)
+            .header("x-access-token",token)
+            .body(bookDTO)
+            .put("/books")
+            .then()
+            .statusCode(200);
+
+    }
+
+
 }

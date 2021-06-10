@@ -5,6 +5,7 @@ import { useAllert } from "../context/AllertProvider";
 import { useLibrary } from "../context/LibraryProvider";
 import { useUser } from "../context/UserProvider";
 import { BOOKS, LIBRARY } from "../settings";
+import EditBook from "./EditBook";
 
 function WithAdmin({ children }) {
   const { user } = useUser();
@@ -74,9 +75,7 @@ function Book({ book }) {
               </div>
             )}
             <WithAdmin>
-              <Button onClick={() => alert("TODO")} variant="secondary">
-                Edit
-              </Button>
+              <EditBook book={book} />
               <Button onClick={deleteBook} variant="danger">
                 Delete
               </Button>

@@ -82,6 +82,33 @@ public class Book implements Serializable {
         this.loans = new ArrayList<>();
     }
 
+    private boolean isValidBookDTO(BookDTO bookDTO) {
+        if (bookDTO.getTitle().isEmpty() || bookDTO.getTitle() == null) {
+            return false;
+        } else if (bookDTO.getDescription().isEmpty() || bookDTO.getDescription() == null) {
+            return false;
+        } else if (bookDTO.getPublisher().isEmpty() || bookDTO.getPublisher() == null) {
+            return false;
+        } else if (bookDTO.getImage().isEmpty() || bookDTO.getImage() == null) {
+            return false;
+        } else if (bookDTO.getPublishYear() == null) {
+            return false;
+        } else if (bookDTO.getAuthors().isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
+    public void updateFields(BookDTO bookDTO) {
+        if (isValidBookDTO(bookDTO)) {
+            this.title = bookDTO.getTitle();
+            this.publisher = bookDTO.getPublisher();
+            this.publishYear = bookDTO.getPublishYear();
+            this.description = bookDTO.getDescription();
+            this.image = bookDTO.getImage();
+        }
+    }
+
     public void addLoad(Loan loan) {
         if (loan != null) {
             this.loans.add(loan);
