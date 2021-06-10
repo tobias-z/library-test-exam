@@ -4,6 +4,7 @@ import entities.book.Book;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
@@ -23,7 +24,7 @@ public class Library implements Serializable {
     @Id
     private String name;
 
-    @OneToMany(mappedBy = "library")
+    @OneToMany(mappedBy = "library", cascade = CascadeType.ALL)
     private List<Book> books;
 
     public Library() {

@@ -19,9 +19,6 @@ function HomePage() {
             <h1 className="text-center">
               Welcome to {library.name} {user.username}
             </h1>
-            <h3 className="text-center">
-              loans: {user.loans.map(loan => loan.book.title)}
-            </h3>
             <Form.Group controlId="formSeach">
               <Form.Control
                 className="mt-2"

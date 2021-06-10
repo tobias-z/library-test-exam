@@ -17,9 +17,13 @@ function AuthProvider({ children }) {
 
   async function login(userCredentials, setError) {
     try {
-      const user = await facade.login(userCredentials);
+      const [user, loans] = await facade.login(userCredentials);
       push("/");
-      setUser({ username: user.username, loans: JSON.parse(user.loans) });
+      setUser({
+        username: user.username,
+        loans,
+        roles: JSON.parse(user.roles),
+      });
     } catch (error) {
       handleError(error, setError);
     }

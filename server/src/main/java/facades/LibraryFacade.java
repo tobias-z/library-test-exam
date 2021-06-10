@@ -69,7 +69,6 @@ public class LibraryFacade implements LibraryRepository {
             Library library = getTransientLibrary(em);
             em.getTransaction().begin();
             library.getBooks().remove(book);
-            em.remove(library);
             em.getTransaction().commit();
             return new LibraryDTO(library);
         } catch (Exception e) {

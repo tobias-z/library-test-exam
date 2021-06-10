@@ -2,22 +2,42 @@ import * as React from "react";
 import { Button, Card } from "react-bootstrap";
 import { fetchData, handleError, https } from "../apiUtils";
 import { useAllert } from "../context/AllertProvider";
+import { useLibrary } from "../context/LibraryProvider";
 import { useUser } from "../context/UserProvider";
-import { BOOKS } from "../settings";
+import { BOOKS, LIBRARY } from "../settings";
 
-const Book = React.memo(({ book }) => {
+function WithAdmin({ children }) {
   const { user } = useUser();
+  const isAdmin = user.roles.find(role => role.roleName === "admin");
+  if (isAdmin) return children;
+  return null;
+}
+
+function Book({ book }) {
+  const { user, run } = useUser();
+  const { findLibrary } = useLibrary();
   const { showLoan } = useAllert();
+  const findLoan = () => user.loans.find(loan => loan.book.isbn === book.isbn);
   const [isLoaned, setIsLoaned] = React.useState(() => {
-    //TODO: match book with user
-    return false;
+    const foundLoan = findLoan();
+    return foundLoan != null;
   });
   const [error, setError] = React.useState(null);
 
   async function loanBook() {
     try {
       const loan = await fetchData(BOOKS.LOAN(book.isbn), https.POST);
+      await run();
       showLoan(loan);
+    } catch (err) {
+      handleError(err, setError);
+    }
+  }
+
+  async function deleteBook() {
+    try {
+      await fetchData(LIBRARY.DELETE_BOOK(book.isbn), https.DELETE);
+      await findLibrary();
     } catch (err) {
       handleError(err, setError);
     }
@@ -35,22 +55,37 @@ const Book = React.memo(({ book }) => {
             Published by {book.publisher} in {book.publishYear}
           </Card.Text>
           <hr />
-          {error && (
-            <Card.Text className="text-danger">{error.message}</Card.Text>
-          )}
-          {!isLoaned ? (
-            <Button onClick={() => loanBook()} variant="primary">
-              Loan book
-            </Button>
-          ) : (
-            <Button onClick={() => alert("TODO")} variant="danger">
-              Remove from loans
-            </Button>
-          )}
+          <div className="d-flex" style={{ gap: "10px" }}>
+            {error && (
+              <Card.Text className="text-danger">{error.message}</Card.Text>
+            )}
+            {!isLoaned ? (
+              <Button onClick={() => loanBook()} variant="primary">
+                Loan book
+              </Button>
+            ) : (
+              <div>
+                <Card.Text>
+                  Return before: {new Date(findLoan().dueTo).toLocaleString()}
+                </Card.Text>
+                <Button onClick={() => alert("TODO")} variant="secondary">
+                  Return book
+                </Button>
+              </div>
+            )}
+            <WithAdmin>
+              <Button onClick={() => alert("TODO")} variant="secondary">
+                Edit
+              </Button>
+              <Button onClick={deleteBook} variant="danger">
+                Delete
+              </Button>
+            </WithAdmin>
+          </div>
         </Card.Body>
       </Card>
     </>
   );
-}, []);
+}
 
 export default Book;

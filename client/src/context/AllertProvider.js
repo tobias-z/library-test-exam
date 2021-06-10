@@ -10,7 +10,7 @@ function AllertProvider({ children }) {
 
   function showLoan(loan) {
     setLoan(loan);
-    setTimeout(() => setLoan(null), 8000);
+    setTimeout(() => setLoan(null), 4000);
   }
 
   const values = {

@@ -14,10 +14,12 @@ const INFO = {
 
 const LIBRARY = {
   GET_LIBRARY: `${BASE_URL}/library`,
+  DELETE_BOOK: isbn => `${BASE_URL}/library/${isbn}`,
 };
 
 const BOOKS = {
   LOAN: isbn => `${BASE_URL}/books/loan/${isbn}`,
+  GET_ALL_FROM_USER: `${BASE_URL}/books`,
 };
 
 export { USER, INFO, LIBRARY, BOOKS };

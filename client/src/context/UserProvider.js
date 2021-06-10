@@ -1,7 +1,7 @@
 import * as React from "react";
 import FullPageSpinner from "../components/FullPageSpinner";
 import { fetchData } from "../apiUtils";
-import { USER } from "../settings";
+import { BOOKS, USER } from "../settings";
 
 const UserContext = React.createContext(null);
 
@@ -12,15 +12,28 @@ function UserProvider({ children }) {
   const [isStillValidationgToken, setIsStillValidationgToken] =
     React.useState(true);
 
+  function run() {
+    Promise.all([
+      fetchData(USER.VALIDATE_TOKEN),
+      fetchData(BOOKS.GET_ALL_FROM_USER),
+    ])
+      .then(([user, loans]) => {
+        setUser({
+          username: user.username,
+          roles: JSON.parse(user.roles),
+          loans: loans,
+        });
+      })
+      .catch(err => {})
+      .finally(() => {
+        setIsStillValidationgToken(false);
+      });
+  }
+
   // Do validation of token
   React.useEffect(() => {
     if (user !== null) return;
-    fetchData(USER.VALIDATE_TOKEN)
-      .then(data =>
-        setUser({ username: data.username, loans: JSON.parse(data.loans) })
-      )
-      .catch(err => {})
-      .finally(() => setIsStillValidationgToken(false));
+    run();
   }, [user]);
 
   if (isStillValidationgToken) return <FullPageSpinner />;
@@ -28,6 +41,7 @@ function UserProvider({ children }) {
   const values = {
     user,
     setUser,
+    run,
   };
 
   return <UserContext.Provider value={values}>{children}</UserContext.Provider>;
