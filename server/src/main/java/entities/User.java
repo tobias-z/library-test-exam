@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -36,6 +37,9 @@ public class User implements Serializable {
   @ManyToMany
   private List<Role> roleList = new ArrayList<>();
 
+  @OneToMany(mappedBy = "user")
+  private List<Loan> loans;
+
   public List<String> getRolesAsStrings() {
     if (roleList.isEmpty()) {
       return null;
@@ -56,8 +60,8 @@ public class User implements Serializable {
 
   public User(String userName, String userPass) {
     this.userName = userName;
-
     this.hashPassword = BCrypt.hashpw(userPass, BCrypt.gensalt());
+    this.loans = new ArrayList<>();
   }
 
 
@@ -89,4 +93,14 @@ public class User implements Serializable {
     roleList.add(userRole);
   }
 
+  public List<Loan> getLoans() {
+    return loans;
+  }
+
+  public void addLoan(Loan loan) {
+    if (loan != null) {
+      this.loans.add(loan);
+      loan.setUser(this);
+    }
+  }
 }

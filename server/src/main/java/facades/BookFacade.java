@@ -71,6 +71,7 @@ public class BookFacade implements BookRepository {
             Loan loan = new Loan(null);
             em.getTransaction().begin();
             book.addLoad(loan);
+            user.addLoan(loan);
             em.getTransaction().commit();
             return new LoanDTO(loan);
         });

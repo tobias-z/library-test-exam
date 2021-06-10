@@ -44,6 +44,9 @@ public class Loan implements Serializable {
     @ManyToOne
     private Book book;
 
+    @ManyToOne
+    private User user;
+
     public Loan() {
     }
 
@@ -98,5 +101,13 @@ public class Loan implements Serializable {
 
     public void setBook(Book book) {
         this.book = book;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

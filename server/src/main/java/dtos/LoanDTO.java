@@ -10,6 +10,7 @@ public class LoanDTO {
     private Date dueTo;
     private Date returnedAt;
     private BookDTO book;
+    private UserDTO user;
 
     public LoanDTO(Date checkout, Date dueTo, Date returnedAt) {
         this.checkout = checkout;
@@ -23,6 +24,7 @@ public class LoanDTO {
         this.dueTo = loan.getDueTo();
         this.returnedAt = loan.getReturnedAt();
         this.book = new BookDTO(loan.getBook());
+        this.user = new UserDTO(loan.getUser());
     }
 
     public Integer getId() {
@@ -63,5 +65,13 @@ public class LoanDTO {
 
     public void setBook(BookDTO book) {
         this.book = book;
+    }
+
+    public UserDTO getUser() {
+        return user;
+    }
+
+    public void setUser(UserDTO user) {
+        this.user = user;
     }
 }
