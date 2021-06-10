@@ -7,6 +7,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 import rest.provider.Provider;
+import utils.SetupDummyData;
 
 @Path("library")
 public class LibraryResource extends Provider {
@@ -17,6 +18,13 @@ public class LibraryResource extends Provider {
     public Response getLibrary() {
         LibraryDTO libraryDTO = REPO.getLibrary();
         return Response.ok(libraryDTO).build();
+    }
+
+    @GET
+    @Path("/generate")
+    public Response addDummyBooks() {
+        SetupDummyData.addDummyBooks();
+        return Response.ok().build();
     }
 
 }

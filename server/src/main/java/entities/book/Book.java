@@ -29,7 +29,7 @@ public class Book implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer isbn;
 
-    @Column(name = "title")
+    @Column(name = "title", unique = true)
     private String title;
 
     @ElementCollection

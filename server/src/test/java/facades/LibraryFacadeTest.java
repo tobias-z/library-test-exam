@@ -15,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import utils.EMF_Creator;
+import utils.TestUtils;
 
 class LibraryFacadeTest {
 
@@ -30,7 +31,7 @@ class LibraryFacadeTest {
         try {
             library = new Library("The Library");
             em.getTransaction().begin();
-            em.createNamedQuery("Library.deleteAllRows").executeUpdate();
+            TestUtils.dropTables(em);
             em.persist(library);
             em.getTransaction().commit();
         } finally {
