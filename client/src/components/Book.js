@@ -5,21 +5,19 @@ import { useAllert } from "../context/AllertProvider";
 import { useUser } from "../context/UserProvider";
 import { BOOKS } from "../settings";
 
-function Book({ book }) {
+const Book = React.memo(({ book }) => {
   const { user } = useUser();
   const { showLoan } = useAllert();
-  const [isLoaned, setIsLoaned] = React.useState(false);
+  const [isLoaned, setIsLoaned] = React.useState(() => {
+    //TODO: match book with user
+    return false;
+  });
   const [error, setError] = React.useState(null);
-
-  React.useEffect(() => {
-    console.log(isLoaned);
-  }, [isLoaned]);
 
   async function loanBook() {
     try {
       const loan = await fetchData(BOOKS.LOAN(book.isbn), https.POST);
       showLoan(loan);
-      setIsLoaned(true);
     } catch (err) {
       handleError(err, setError);
     }
@@ -53,6 +51,6 @@ function Book({ book }) {
       </Card>
     </>
   );
-}
+}, []);
 
 export default Book;

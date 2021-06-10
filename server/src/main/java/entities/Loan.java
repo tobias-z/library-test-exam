@@ -110,4 +110,15 @@ public class Loan implements Serializable {
     public void setUser(User user) {
         this.user = user;
     }
+
+    @Override
+    public String toString() {
+        return "Loan{" +
+            "id=" + id +
+            ", checkout=" + checkout +
+            ", dueTo=" + dueTo +
+            ", returnedAt=" + returnedAt +
+            ", book=" + book +
+            '}';
+    }
 }

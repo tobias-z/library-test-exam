@@ -16,7 +16,10 @@ function UserProvider({ children }) {
   React.useEffect(() => {
     if (user !== null) return;
     fetchData(USER.VALIDATE_TOKEN)
-      .then(data => setUser({ username: data.username }))
+      .then(data =>
+        setUser({ username: data.username, loans: JSON.parse(data.loans) })
+      )
+      .catch(err => {})
       .finally(() => setIsStillValidationgToken(false));
   }, [user]);
 

@@ -9,6 +9,9 @@ import com.nimbusds.jose.JWSSigner;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import dtos.BookDTO;
+import dtos.LoanDTO;
+import dtos.UserDTO;
 import entities.User;
 import facades.UserFacade;
 import java.text.ParseException;
@@ -55,6 +58,7 @@ public class LoginEndpoint extends Provider {
             UserPrincipal principal = JWTAuthenticationFilter.getUserPrincipalFromTokenIfValid(token);
             JsonObject responseJson = new JsonObject();
             responseJson.addProperty("username", principal.getName());
+            responseJson.addProperty("loans", GSON.toJson(principal.getLoans()));
             responseJson.addProperty("token", token);
             return Response.ok(GSON.toJson(responseJson)).build();
         } catch (ParseException | JOSEException | AuthenticationException e) {
@@ -75,10 +79,11 @@ public class LoginEndpoint extends Provider {
         }
 
         try {
-            User user = USER_FACADE.getVeryfiedUser(username, password);
-            String token = createToken(username, user.getRolesAsStrings());
+            UserDTO user = USER_FACADE.getVeryfiedUser(username, password);
+            String token = createToken(username, user.getRolesAsStrings(), user.getLoans());
             JsonObject responseJson = new JsonObject();
             responseJson.addProperty("username", username);
+            responseJson.addProperty("loans", GSON.toJson(user.getLoans()));
             responseJson.addProperty("token", token);
             return Response.ok(GSON.toJson(responseJson)).build();
 
@@ -91,7 +96,7 @@ public class LoginEndpoint extends Provider {
         throw new AuthenticationException("Invalid username or password! Please try again");
     }
 
-    private String createToken(String userName, List<String> roles) throws JOSEException {
+    private String createToken(String userName, List<String> roles, List<LoanDTO> loans) throws JOSEException {
 
         StringBuilder res = new StringBuilder();
         for (String string : roles) {
@@ -107,6 +112,7 @@ public class LoginEndpoint extends Provider {
             .subject(userName)
             .claim("username", userName)
             .claim("roles", rolesAsString)
+            .claim("loans", loans)
             .claim("issuer", issuer)
             .issueTime(date)
             .expirationTime(new Date(date.getTime() + TOKEN_EXPIRE_TIME))

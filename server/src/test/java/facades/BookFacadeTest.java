@@ -74,6 +74,5 @@ class BookFacadeTest {
         LoanDTO loanDTO = repo.loanBook(user.getUserName(), book1.getIsbn());
         assertNotNull(loanDTO);
         assertEquals(book1.getIsbn(), loanDTO.getBook().getIsbn());
-        assertEquals(user.getUserName(), loanDTO.getUser().getUsername());
     }
 }

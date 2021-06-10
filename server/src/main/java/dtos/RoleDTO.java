@@ -12,12 +12,8 @@ public class RoleDTO {
         this.roleName = roleName;
     }
 
-    public RoleDTO(Role role) {
-        this.roleName = role.getRoleName();
-    }
-
     public static List<RoleDTO> getRoleDTOSFromRoles(List<Role> roles) {
-        return roles.stream().map(role -> new RoleDTO(role)).collect(Collectors.toList());
+        return roles.stream().map(role -> new RoleDTO(role.getRoleName())).collect(Collectors.toList());
     }
 
     public String getRoleName() {

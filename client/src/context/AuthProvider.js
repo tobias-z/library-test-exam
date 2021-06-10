@@ -19,7 +19,7 @@ function AuthProvider({ children }) {
     try {
       const user = await facade.login(userCredentials);
       push("/");
-      setUser({ username: user.username });
+      setUser({ username: user.username, loans: JSON.parse(user.loans) });
     } catch (error) {
       handleError(error, setError);
     }

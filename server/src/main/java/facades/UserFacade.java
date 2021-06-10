@@ -1,6 +1,7 @@
 package facades;
 
 import dtos.LoanDTO;
+import dtos.UserDTO;
 import entities.User;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -31,7 +32,7 @@ public class UserFacade {
         return instance;
     }
 
-    public User getVeryfiedUser(String username, String password) throws AuthenticationException {
+    public UserDTO getVeryfiedUser(String username, String password) throws AuthenticationException {
         EntityManager em = emf.createEntityManager();
         User user;
         try {
@@ -42,7 +43,7 @@ public class UserFacade {
         } finally {
             em.close();
         }
-        return user;
+        return new UserDTO(user);
     }
 
 }

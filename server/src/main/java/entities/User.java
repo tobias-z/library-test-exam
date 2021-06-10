@@ -103,4 +103,14 @@ public class User implements Serializable {
       loan.setUser(this);
     }
   }
+
+  @Override
+  public String toString() {
+    return "User{" +
+        "userName='" + userName + '\'' +
+        ", hashPassword='" + hashPassword + '\'' +
+        ", roleList=" + roleList +
+        ", loans=" + loans +
+        '}';
+  }
 }
