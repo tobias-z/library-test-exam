@@ -3,8 +3,12 @@ package rest;
 import dtos.LibraryDTO;
 import entities.library.LibraryRepository;
 import facades.LibraryFacade;
+import java.util.List;
+import javax.annotation.security.RolesAllowed;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 import rest.provider.Provider;
 import utils.SetupDummyData;
@@ -25,6 +29,14 @@ public class LibraryResource extends Provider {
     public Response addDummyBooks() {
         SetupDummyData.addDummyBooks();
         return Response.ok().build();
+    }
+
+    @DELETE
+    @Path("/{isbn}")
+    @RolesAllowed("admin")
+    public Response deleteBook(@PathParam("isbn") int isbn) {
+        LibraryDTO libraryDTOS = REPO.deleteBook(isbn);
+        return Response.ok(GSON.toJson(libraryDTOS)).build();
     }
 
 }
