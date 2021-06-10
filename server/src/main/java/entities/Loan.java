@@ -20,6 +20,8 @@ import javax.persistence.TemporalType;
 })
 public class Loan implements Serializable {
 
+    private static final long serialVersionUID = -9138552347609697498L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -30,25 +32,25 @@ public class Loan implements Serializable {
 
     @Temporal(value = TemporalType.DATE)
     @Column(name = "due")
-    private Date due;
+    private Date dueTo;
 
     @Temporal(value = TemporalType.DATE)
     @Column(name = "returned", nullable = true)
-    private Date returned;
+    private Date returnedAt;
 
     public Loan() {
     }
 
-    public Loan(Date due, Date returned) {
+    public Loan(Date dueTo, Date returnedAt) {
         this.checkout = new Date();
-        this.due = due;
-        this.returned = returned;
+        this.dueTo = dueTo;
+        this.returnedAt = returnedAt;
     }
 
-    public Loan(Date checkout, Date due, Date returned) {
+    public Loan(Date checkout, Date dueTo, Date returnedAt) {
         this.checkout = checkout;
-        this.due = due;
-        this.returned = returned;
+        this.dueTo = dueTo;
+        this.returnedAt = returnedAt;
     }
 
     public void setId(Integer id) {
@@ -67,19 +69,19 @@ public class Loan implements Serializable {
         this.checkout = checkout;
     }
 
-    public Date getDue() {
-        return due;
+    public Date getDueTo() {
+        return dueTo;
     }
 
-    public void setDue(Date due) {
-        this.due = due;
+    public void setDueTo(Date due) {
+        this.dueTo = due;
     }
 
-    public Date getReturned() {
-        return returned;
+    public Date getReturnedAt() {
+        return returnedAt;
     }
 
-    public void setReturned(Date returned) {
-        this.returned = returned;
+    public void setReturnedAt(Date returned) {
+        this.returnedAt = returned;
     }
 }
