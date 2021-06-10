@@ -1,5 +1,5 @@
 import * as React from "react";
-import Book from "../components/Book";
+import { Book } from "../components/Book";
 import FullPageSpinner from "../components/FullPageSpinner";
 import Layout from "../components/Layout";
 import { useLibrary } from "../context/LibraryProvider";

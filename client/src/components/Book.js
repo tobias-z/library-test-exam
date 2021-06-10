@@ -87,4 +87,4 @@ function Book({ book }) {
   );
 }
 
-export default Book;
+export { Book, WithAdmin };

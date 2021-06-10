@@ -7,7 +7,7 @@ function UnauthenticatedApp() {
   return (
     <>
       <Switch>
-        <Route path="/">
+        <Route exact path="/">
           <LoginPage />
         </Route>
         <Route path="/" component={NoMatch} />

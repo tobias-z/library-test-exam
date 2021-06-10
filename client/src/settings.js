@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8080/library/api";
+const BASE_URL = "https://api.tobias-z.com/library/api";
 
 const USER = {
   LOGIN: `${BASE_URL}/login`,
@@ -15,6 +15,7 @@ const INFO = {
 const LIBRARY = {
   GET_LIBRARY: `${BASE_URL}/library`,
   DELETE_BOOK: isbn => `${BASE_URL}/library/${isbn}`,
+  ADD_BOOK: `${BASE_URL}/library/`,
 };
 
 const BOOKS = {

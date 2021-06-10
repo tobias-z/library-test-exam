@@ -3,6 +3,7 @@ package rest;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.*;
 
+import dtos.BookDTO;
 import entities.Role;
 import entities.User;
 import entities.book.Book;
@@ -99,6 +100,23 @@ class LibraryResourceTest extends SetupRestTests {
             .pathParam("isbn", book.getIsbn())
             .when()
             .delete("/library/{isbn}")
+            .then()
+            .statusCode(200)
+            .body("name", Matchers.equalTo(Library.getLibraryName()));
+    }
+
+    @Test
+    @DisplayName("add book should return with a 200 response code")
+    void addBookShouldReturnWithA200ResponseCode() throws Exception {
+        String token = login();
+        BookDTO bookDTO = new BookDTO("New book", Arrays.asList("SOmeone"), "Someone", 1998, "The Wizzard",
+            "Something");
+        given()
+            .contentType(ContentType.JSON)
+            .header("x-access-token", token)
+            .body(bookDTO)
+            .when()
+            .post("/library/")
             .then()
             .statusCode(200)
             .body("name", Matchers.equalTo(Library.getLibraryName()));
