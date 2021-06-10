@@ -8,4 +8,6 @@ public interface BookRepository {
 
     List<BookDTO> getAllBooks() throws WebApplicationException;
 
+    BookDTO createBook(BookDTO bookDTO) throws WebApplicationException;
+
 }

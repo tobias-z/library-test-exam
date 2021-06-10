@@ -2,6 +2,7 @@ package entities.library;
 
 import entities.book.Book;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -41,6 +42,7 @@ public class Library implements Serializable {
 
     public Library(String name) {
         this.name = name;
+        this.books = new ArrayList<>();
     }
 
     public String getName() {

@@ -1,5 +1,6 @@
 package entities.book;
 
+import dtos.BookDTO;
 import entities.library.Library;
 import java.io.Serializable;
 import java.util.List;
@@ -61,6 +62,15 @@ public class Book implements Serializable {
         this.publishYear = publishYear;
         this.description = description;
         this.image = image;
+    }
+
+    public Book(BookDTO bookDTO) {
+        this.title = bookDTO.getTitle();
+        this.authors = bookDTO.getAuthors();
+        this.publisher = bookDTO.getPublisher();
+        this.publishYear = bookDTO.getPublishYear();
+        this.description = bookDTO.getDescription();
+        this.image = bookDTO.getImage();
     }
 
     public void setIsbn(Integer id) {

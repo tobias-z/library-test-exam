@@ -50,4 +50,11 @@ public class BookFacade implements BookRepository {
             em.close();
         }
     }
+
+    @Override
+    public BookDTO createBook(BookDTO bookDTO) throws WebApplicationException {
+        Book book = new Book(bookDTO);
+        executeInsideTransaction(em -> em.persist(book));
+        return new BookDTO(book);
+    }
 }

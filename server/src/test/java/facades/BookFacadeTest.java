@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import utils.EMF_Creator;
 
@@ -30,21 +31,10 @@ class BookFacadeTest {
             book2 = new Book("Harry Potter2", Arrays.asList("JK Rowling2"), "Someone2", 1999, "The Wizzard2", "Something2");
             book3 = new Book("Harry Potter3", Arrays.asList("JK Rowling3"), "Someone3", 2000, "The Wizzard3", "Something3");
             em.getTransaction().begin();
+            em.createNamedQuery("Book.deleteAllRows").executeUpdate();
             em.persist(book1);
             em.persist(book2);
             em.persist(book3);
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
-    }
-
-    @AfterEach
-    void tearDown() {
-        EntityManager em = EMF.createEntityManager();
-        try {
-            em.getTransaction().begin();
-            em.createNamedQuery("Book.deleteAllRows").executeUpdate();
             em.getTransaction().commit();
         } finally {
             em.close();
@@ -56,5 +46,13 @@ class BookFacadeTest {
         List<BookDTO> bookDTOS = repo.getAllBooks();
         assertNotNull(bookDTOS);
         assertEquals(3, bookDTOS.size());
+    }
+
+    @Test
+    @DisplayName("create book should create a book and return it")
+    void createBookShouldCreateABookAndReturnIt() throws Exception {
+        BookDTO bookDTO = new BookDTO("Harry Potter", Arrays.asList("JK Rowling"), "Someone", 1998, "The Wizzard", "Something");
+        BookDTO createdBook = repo.createBook(bookDTO);
+        assertNotNull(createdBook);
     }
 }
