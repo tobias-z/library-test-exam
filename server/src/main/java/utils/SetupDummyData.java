@@ -23,7 +23,7 @@ public class SetupDummyData {
         try {
             BookDTO book1 = new BookDTO("Harry Potter and the Philosopher's Stone", Arrays.asList("JK Rowling"),
                 "Bloomsbury", 1997, "About a boy who is a wizzard",
-                "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fbestfantasybooks.com%2Fblog%2Fwp-content%2Fuploads%2F2013%2F02%2Flotr.png&f=1&nofb=1");
+                "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimages.thenile.io%2Fr1000%2F9780747554561.jpg&f=1&nofb=1");
             BookDTO book2 = new BookDTO("The Lord of the Rings", Arrays.asList("Tolkien"), "Allen & Unwin", 1940,
                 "An evil master and his rings",
                 "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fbestfantasybooks.com%2Fblog%2Fwp-content%2Fuploads%2F2013%2F02%2Flotr.png&f=1&nofb=1");

@@ -12,4 +12,8 @@ const INFO = {
   FETCH_ONE: `${BASE_URL}/info/fetchData`,
 };
 
-export { USER, INFO };
+const LIBRARY = {
+  GET_LIBRARY: `${BASE_URL}/library`,
+};
+
+export { USER, INFO, LIBRARY };

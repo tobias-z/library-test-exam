@@ -4,12 +4,8 @@ import { Button, Card } from "react-bootstrap";
 function Book({ book }) {
   return (
     <>
-      <Card style={{ width: "20rem" }}>
-        <Card.Img
-          variant="top"
-          height="300"
-          src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimages.thenile.io%2Fr1000%2F9780747554561.jpg&f=1&nofb=1"
-        />
+      <Card style={{ width: "22rem" }}>
+        <Card.Img variant="top" height="300" src={book.image} />
         <Card.Body>
           <Card.Title>{book.authors.map(author => `${author} `)}</Card.Title>
           <Card.Subtitle>{book.title}</Card.Subtitle>
