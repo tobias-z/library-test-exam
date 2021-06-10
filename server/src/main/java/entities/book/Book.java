@@ -1,5 +1,6 @@
 package entities.book;
 
+import entities.library.Library;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Column;
@@ -8,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -43,6 +46,9 @@ public class Book implements Serializable {
 
     @Column(name = "image")
     private String image;
+
+    @ManyToOne
+    private Library library;
 
     public Book() {
     }
@@ -111,5 +117,13 @@ public class Book implements Serializable {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Library getLibrary() {
+        return library;
+    }
+
+    public void setLibrary(Library library) {
+        this.library = library;
     }
 }
