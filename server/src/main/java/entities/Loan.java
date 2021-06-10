@@ -1,12 +1,15 @@
 package entities;
 
+import entities.book.Book;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -21,7 +24,7 @@ import javax.persistence.TemporalType;
 public class Loan implements Serializable {
 
     private static final long serialVersionUID = -9138552347609697498L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -38,18 +41,22 @@ public class Loan implements Serializable {
     @Column(name = "returned", nullable = true)
     private Date returnedAt;
 
+    @ManyToOne
+    private Book book;
+
     public Loan() {
     }
 
-    public Loan(Date dueTo, Date returnedAt) {
-        this.checkout = new Date();
-        this.dueTo = dueTo;
-        this.returnedAt = returnedAt;
-    }
-
-    public Loan(Date checkout, Date dueTo, Date returnedAt) {
-        this.checkout = checkout;
-        this.dueTo = dueTo;
+    public Loan(Date returnedAt) {
+        Calendar currentDate = Calendar.getInstance();
+        Calendar dueToDate = Calendar.getInstance();
+        try {
+            dueToDate.set(Calendar.MONTH, Calendar.MONTH + 1);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            dueToDate.set(Calendar.MONTH, 1);
+        }
+        this.checkout = currentDate.getTime();
+        this.dueTo = dueToDate.getTime();
         this.returnedAt = returnedAt;
     }
 
@@ -83,5 +90,13 @@ public class Loan implements Serializable {
 
     public void setReturnedAt(Date returned) {
         this.returnedAt = returned;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
     }
 }

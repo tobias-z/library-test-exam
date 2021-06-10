@@ -1,6 +1,9 @@
 package facades;
 
 import dtos.BookDTO;
+import dtos.LoanDTO;
+import entities.Loan;
+import entities.User;
 import entities.book.Book;
 import entities.book.BookRepository;
 import java.util.List;
@@ -57,4 +60,40 @@ public class BookFacade implements BookRepository {
         executeInsideTransaction(em -> em.persist(book));
         return new BookDTO(book);
     }
+
+    @Override
+    public LoanDTO loanBook(String username, int isbn) throws WebApplicationException {
+        return withUser(username, (user, em) -> {
+            Book book = em.find(Book.class, isbn);
+            if (book == null) {
+                throw new WebApplicationException("Unable to find book with isbn: " + isbn);
+            }
+            Loan loan = new Loan(null);
+            em.getTransaction().begin();
+            book.addLoad(loan);
+            em.getTransaction().commit();
+            return new LoanDTO(loan);
+        });
+    }
+
+    public LoanDTO withUser(String username, UserAction<LoanDTO> action) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            User user = em.find(User.class, username);
+            if (user == null) {
+                throw new WebApplicationException("Unable to find user with that username", 403);
+            }
+            return action.commit(user, em);
+        } catch (Exception e) {
+            throw new WebApplicationException(e.getMessage());
+        } finally {
+            em.close();
+        }
+    }
+
+}
+
+@FunctionalInterface
+interface UserAction<T> {
+    T commit(User user, EntityManager em) throws WebApplicationException;
 }

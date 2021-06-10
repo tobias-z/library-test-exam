@@ -1,8 +1,10 @@
 package facades;
 
+import dtos.LoanDTO;
 import entities.User;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.ws.rs.WebApplicationException;
 import security.errorhandling.AuthenticationException;
 
 /**
@@ -44,3 +46,4 @@ public class UserFacade {
     }
 
 }
+

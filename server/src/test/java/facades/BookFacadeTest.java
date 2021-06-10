@@ -3,6 +3,9 @@ package facades;
 import static org.junit.jupiter.api.Assertions.*;
 
 import dtos.BookDTO;
+import dtos.LoanDTO;
+import entities.Role;
+import entities.User;
 import entities.book.Book;
 import entities.book.BookRepository;
 import java.util.Arrays;
@@ -21,6 +24,7 @@ class BookFacadeTest {
 
     private BookRepository repo;
     private Book book1, book2, book3;
+    private User user;
 
     @BeforeEach
     void setUp() {
@@ -32,9 +36,17 @@ class BookFacadeTest {
             book3 = new Book("Harry Potter3", Arrays.asList("JK Rowling3"), "Someone3", 2000, "The Wizzard3", "Something3");
             em.getTransaction().begin();
             TestUtils.dropTables(em);
+            // Books
             em.persist(book1);
             em.persist(book2);
             em.persist(book3);
+
+            // User stuff
+            Role userRole = new Role("user");
+            user = new User("bob", "1234");
+            user.addRole(userRole);
+            em.persist(userRole);
+            em.persist(user);
             em.getTransaction().commit();
         } finally {
             em.close();
@@ -54,5 +66,12 @@ class BookFacadeTest {
         BookDTO bookDTO = new BookDTO("Harry Potter4", Arrays.asList("JK Rowling"), "Someone", 1998, "The Wizzard", "Something");
         BookDTO createdBook = repo.createBook(bookDTO);
         assertNotNull(createdBook);
+    }
+
+    @Test
+    @DisplayName("loanBook should loan a book to a user")
+    void loanBookShouldLoanABookToAUser() throws Exception {
+        LoanDTO loanDTO = repo.loanBook(user.getUserName(), book1.getIsbn());
+        assertNotNull(loanDTO);
     }
 }

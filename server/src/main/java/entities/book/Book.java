@@ -1,9 +1,12 @@
 package entities.book;
 
 import dtos.BookDTO;
+import entities.Loan;
 import entities.library.Library;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -14,6 +17,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -51,6 +55,9 @@ public class Book implements Serializable {
     @ManyToOne
     private Library library;
 
+    @OneToMany(mappedBy = "book", cascade = CascadeType.PERSIST)
+    private List<Loan> loans;
+
     public Book() {
     }
 
@@ -62,6 +69,7 @@ public class Book implements Serializable {
         this.publishYear = publishYear;
         this.description = description;
         this.image = image;
+        this.loans = new ArrayList<>();
     }
 
     public Book(BookDTO bookDTO) {
@@ -71,6 +79,14 @@ public class Book implements Serializable {
         this.publishYear = bookDTO.getPublishYear();
         this.description = bookDTO.getDescription();
         this.image = bookDTO.getImage();
+        this.loans = new ArrayList<>();
+    }
+
+    public void addLoad(Loan loan) {
+        if (loan != null) {
+            this.loans.add(loan);
+            loan.setBook(this);
+        }
     }
 
     public void setIsbn(Integer id) {
@@ -104,8 +120,7 @@ public class Book implements Serializable {
     public void setPublisher(String publisher) {
         this.publisher = publisher;
     }
-
-    public Integer getPublishYear() {
+public Integer getPublishYear() {
         return publishYear;
     }
 
@@ -136,4 +151,9 @@ public class Book implements Serializable {
     public void setLibrary(Library library) {
         this.library = library;
     }
+
+    public List<Loan> getLoans() {
+        return loans;
+    }
+
 }
