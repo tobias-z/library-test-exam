@@ -3,10 +3,11 @@ if [ -f .env ]; then
     export $(cat .env | grep -v '#' | awk '/=/ {print $1}')
 fi
 
+cd client
+
 echo "##############################"
 echo "Building the frontend project"
 echo "##############################"
-cd client
 npm run build
 
 echo "##############################"

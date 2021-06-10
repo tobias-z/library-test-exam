@@ -12,7 +12,7 @@ function AuthenticatedHeader() {
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Container>
         <LinkContainer to="/">
-          <Navbar.Brand>inSession Startcode</Navbar.Brand>
+          <Navbar.Brand>The Library</Navbar.Brand>
         </LinkContainer>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">

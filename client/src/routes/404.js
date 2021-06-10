@@ -1,11 +1,14 @@
-import * as React from "react"
+import * as React from "react";
+import { useRouteMatch } from "react-router";
+import Layout from "../components/Layout";
 
 function NoMatch() {
+  const { path } = useRouteMatch();
   return (
-    <div>
-      <h1>404: No page found for this url</h1>
-    </div>
-  )
+    <Layout>
+      <h1>No such path found: {path}</h1>
+    </Layout>
+  );
 }
 
-export default NoMatch
+export default NoMatch;

@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8080/starter/api";
+const BASE_URL = "http://localhost:8080/library/api";
 
 const USER = {
   LOGIN: `${BASE_URL}/login`,
