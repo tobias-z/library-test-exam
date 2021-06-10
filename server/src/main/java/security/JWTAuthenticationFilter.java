@@ -8,6 +8,7 @@ import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.SignedJWT;
 import dtos.Example.BeerDTO;
 import dtos.LoanDTO;
+import dtos.RoleDTO;
 import java.lang.reflect.Type;
 import security.errorhandling.AuthenticationException;
 import java.io.IOException;
@@ -90,10 +91,11 @@ public class JWTAuthenticationFilter implements ContainerRequestFilter {
             }
             String roles = signedJWT.getJWTClaimsSet().getClaim("roles").toString();
             String username = signedJWT.getJWTClaimsSet().getClaim("username").toString();
+            List<RoleDTO> myRoles = (List<RoleDTO>) signedJWT.getJWTClaimsSet().getClaim("myRoles");
 
             String[] rolesArray = roles.split(",");
 
-            return new UserPrincipal(username, rolesArray);
+            return new UserPrincipal(username, rolesArray, myRoles);
 //     return new UserPrincipal(username, roles);
         } else {
             throw new JOSEException("User could not be extracted from token");

@@ -1,6 +1,6 @@
 package security;
 
-import dtos.LoanDTO;
+import dtos.RoleDTO;
 import entities.User;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -10,18 +10,20 @@ import java.util.List;
 public class UserPrincipal implements Principal {
 
   private String username;
-  private List<String> roles = new ArrayList<>();
+  private List<String> rolesAsString;
+  private List<RoleDTO> roles;
 
   /* Create a UserPrincipal, given the Entity class User*/
   public UserPrincipal(User user) {
     this.username = user.getUserName();
-    this.roles = user.getRolesAsStrings();
+    this.rolesAsString = user.getRolesAsStrings();
   }
 
-  public UserPrincipal(String username, String[] roles) {
+  public UserPrincipal(String username, String[] rolesAsString, List<RoleDTO> roles) {
     super();
     this.username = username;
-    this.roles = Arrays.asList(roles);
+    this.rolesAsString = Arrays.asList(rolesAsString);
+    this.roles = roles;
   }
 
   @Override
@@ -29,7 +31,11 @@ public class UserPrincipal implements Principal {
     return username;
   }
 
+  public List<RoleDTO> getRoles() {
+    return roles;
+  }
+
   public boolean isUserInRole(String role) {
-    return this.roles.contains(role);
+    return this.rolesAsString.contains(role);
   }
 }

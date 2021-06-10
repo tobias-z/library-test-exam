@@ -4,7 +4,9 @@ import dtos.BookDTO;
 import dtos.LoanDTO;
 import entities.book.BookRepository;
 import facades.BookFacade;
+import java.util.List;
 import javax.annotation.security.RolesAllowed;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -22,11 +24,20 @@ public class BookResource extends Provider {
     SecurityContext securityContext;
 
     @POST
-    @RolesAllowed("user")
+    @RolesAllowed({"user", "admin"})
     @Path("/loan/{isbn}")
     public Response loanBook(@PathParam("isbn") Integer isbn) {
         String username = securityContext.getUserPrincipal().getName();
         LoanDTO loanDTO = REPO.loanBook(username, isbn);
         return Response.ok(GSON.toJson(loanDTO)).build();
     }
+
+    @GET
+    @RolesAllowed({"user", "admin"})
+    public Response getAllUserLoans() {
+        String username = securityContext.getUserPrincipal().getName();
+        List<LoanDTO> loanDTOS = REPO.getAllUserLoans(username);
+        return Response.ok(GSON.toJson(loanDTOS)).build();
+    }
+
 }

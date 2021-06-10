@@ -89,7 +89,8 @@ public class BookFacade implements BookRepository {
     @Override
     public List<LoanDTO> getAllUserLoans(String username) throws WebApplicationException {
         return withUser(username, (user, em) -> {
-            List<Loan> loans = em.createQuery("SELECT l FROM Loan l WHERE l.user.userName = :username", Loan.class)
+            List<Loan> loans = em
+                .createQuery("SELECT l FROM Loan l WHERE l.user.userName = :username", Loan.class)
                 .setParameter("username", username)
                 .getResultList();
             return LoanDTO.getLoanDTOSFromLoans(loans);
@@ -115,5 +116,6 @@ public class BookFacade implements BookRepository {
 
 @FunctionalInterface
 interface UserAction<T> {
+
     T commit(User user, EntityManager em) throws WebApplicationException;
 }

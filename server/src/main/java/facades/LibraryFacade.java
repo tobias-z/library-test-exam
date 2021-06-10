@@ -58,6 +58,27 @@ public class LibraryFacade implements LibraryRepository {
         }
     }
 
+    @Override
+    public LibraryDTO deleteBook(int isbn) throws WebApplicationException {
+        EntityManager em = emf.createEntityManager();
+        try {
+            Book book = em.find(Book.class, isbn);
+            if (book == null) {
+                throw new WebApplicationException("Unable to find book", 403);
+            }
+            Library library = getTransientLibrary(em);
+            em.getTransaction().begin();
+            library.getBooks().remove(book);
+            em.remove(library);
+            em.getTransaction().commit();
+            return new LibraryDTO(library);
+        } catch (Exception e) {
+            throw new WebApplicationException(e.getMessage());
+        } finally {
+            em.close();
+        }
+    }
+
     private Library getTransientLibrary(EntityManager em) {
         Library library;
         String name = Library.getLibraryName();

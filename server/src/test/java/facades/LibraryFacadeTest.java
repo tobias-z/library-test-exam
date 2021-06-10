@@ -23,6 +23,7 @@ class LibraryFacadeTest {
 
     private LibraryRepository repo;
     private Library library;
+    private Book book;
 
     @BeforeEach
     void setUp() {
@@ -30,9 +31,12 @@ class LibraryFacadeTest {
         EntityManager em = EMF.createEntityManager();
         try {
             library = new Library("The Library");
+            book = new Book("Harry Potter2", Arrays.asList("JK Rowling"), "Someone", 1998, "The Wizzard",
+                "Something");
             em.getTransaction().begin();
             TestUtils.dropTables(em);
             em.persist(library);
+            em.persist(book);
             em.getTransaction().commit();
         } finally {
             em.close();
@@ -49,8 +53,15 @@ class LibraryFacadeTest {
     @Test
     @DisplayName("add book to library")
     void addBookToLibrary() throws Exception {
-        BookDTO bookDTO = new BookDTO("Harry Potter", Arrays.asList("JK Rowling"), "Someone", 1998, "The Wizzard", "Something");
+        BookDTO bookDTO = new BookDTO("Harry Potter", Arrays.asList("JK Rowling"), "Someone", 1998,
+            "The Wizzard", "Something");
         LibraryDTO libraryDTO = repo.addBook(bookDTO);
         assertNotNull(libraryDTO);
+    }
+
+    @Test
+    @DisplayName("delete book should remove a book")
+    void deleteBookShouldRemoveABook() throws Exception {
+        assertDoesNotThrow(() -> repo.deleteBook(book.getIsbn()));
     }
 }

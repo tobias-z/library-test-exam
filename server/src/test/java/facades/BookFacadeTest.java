@@ -9,6 +9,7 @@ import entities.Role;
 import entities.User;
 import entities.book.Book;
 import entities.book.BookRepository;
+import entities.library.Library;
 import java.util.Arrays;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -86,5 +87,6 @@ class BookFacadeTest {
         assertNotNull(loanDTOS);
         assertEquals(2, loanDTOS.size());
     }
+
 
 }

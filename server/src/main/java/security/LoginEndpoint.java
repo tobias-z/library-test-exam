@@ -11,6 +11,7 @@ import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import dtos.BookDTO;
 import dtos.LoanDTO;
+import dtos.RoleDTO;
 import dtos.UserDTO;
 import entities.User;
 import facades.UserFacade;
@@ -58,6 +59,7 @@ public class LoginEndpoint extends Provider {
             UserPrincipal principal = JWTAuthenticationFilter.getUserPrincipalFromTokenIfValid(token);
             JsonObject responseJson = new JsonObject();
             responseJson.addProperty("username", principal.getName());
+            responseJson.addProperty("roles", GSON.toJson(principal.getRoles()));
             responseJson.addProperty("token", token);
             return Response.ok(GSON.toJson(responseJson)).build();
         } catch (ParseException | JOSEException | AuthenticationException e) {
@@ -79,9 +81,10 @@ public class LoginEndpoint extends Provider {
 
         try {
             UserDTO user = USER_FACADE.getVeryfiedUser(username, password);
-            String token = createToken(username, user.getRolesAsStrings(), user.getLoans());
+            String token = createToken(username, user.getRolesAsStrings(), user.getRoles());
             JsonObject responseJson = new JsonObject();
             responseJson.addProperty("username", username);
+            responseJson.addProperty("roles", GSON.toJson(user.getRoles()));
             responseJson.addProperty("token", token);
             return Response.ok(GSON.toJson(responseJson)).build();
 
@@ -94,7 +97,7 @@ public class LoginEndpoint extends Provider {
         throw new AuthenticationException("Invalid username or password! Please try again");
     }
 
-    private String createToken(String userName, List<String> roles, List<LoanDTO> loans) throws JOSEException {
+    private String createToken(String userName, List<String> roles, List<RoleDTO> myRoles) throws JOSEException {
 
         StringBuilder res = new StringBuilder();
         for (String string : roles) {
@@ -110,6 +113,7 @@ public class LoginEndpoint extends Provider {
             .subject(userName)
             .claim("username", userName)
             .claim("roles", rolesAsString)
+            .claim("myRoles", myRoles)
             .claim("issuer", issuer)
             .issueTime(date)
             .expirationTime(new Date(date.getTime() + TOKEN_EXPIRE_TIME))

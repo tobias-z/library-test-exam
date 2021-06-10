@@ -10,4 +10,6 @@ public interface LibraryRepository {
 
     LibraryDTO addBook(BookDTO bookDTO) throws WebApplicationException;
 
+    LibraryDTO deleteBook(int isbn) throws WebApplicationException;
+
 }

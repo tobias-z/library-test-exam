@@ -14,6 +14,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import utils.TestUtils;
 
@@ -75,6 +76,19 @@ class BookResourceTest extends SetupRestTests {
             .pathParam("isbn", book1.getIsbn())
             .when()
             .post("/books/loan/{isbn}")
+            .then()
+            .statusCode(200);
+    }
+
+    @Test
+    @DisplayName("get all user loans should return a 200 response")
+    void getAllUserLoansShouldReturnA200Response() throws Exception {
+        String token = login();
+        given()
+            .contentType(ContentType.JSON)
+            .header("x-access-token", token)
+            .when()
+            .get("/books/")
             .then()
             .statusCode(200);
     }
